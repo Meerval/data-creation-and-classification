@@ -1,0 +1,8 @@
+.idea/
+__pycache__/
+bad_normal/
+circle/
+normal/
+bad_normal_classifier_estimate.txt
+circle_classifier_estimate.txt
+normal_classifier_estimate.txt
