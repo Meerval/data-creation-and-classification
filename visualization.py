@@ -13,10 +13,10 @@ class DataDistribution:
     combination of features.
     """
 
-    def __init__(self, classes, data_type='normal',
+    def __init__(self, classes, data_name='data',
                  save=True, show=False, xfig=8, dpi=150):
         self.classes = classes
-        self.data_type = data_type
+        self.data_name = data_name
         self.save, self.show = save, show
         # The information about input data parameters
         self.class_count = len(self.classes)
@@ -38,7 +38,7 @@ class DataDistribution:
         combination of features.
         """
         for variation in self.variations:
-            name = self.data_type + '_data_distribution_for_' + \
+            name = self.data_name + '_data_distribution_for_' + \
                    str(variation[0] + 1) + '&' + str(variation[1] + 1) + \
                    '_features'
             self.get_dimensions(variation)
@@ -53,7 +53,7 @@ class DataDistribution:
             plt.legend(labels=labels, bbox_to_anchor=(0., 1.),
                        loc='lower left')
             if self.save:
-                get_saving(self.data_type, name, self.dpi)
+                get_saving(self.data_name, name, self.dpi)
             if self.show:
                 plt.show()
 
@@ -139,14 +139,14 @@ class DataDistribution:
 
 def probabilities_hist(probabilities_train, probabilities_test, labels_train,
                        labels_test, classifier_type='classifier',
-                       data_type='data', target_class=1,
+                       data_name='data', target_class=1,
                        save=True, show=False, dpi=150):
     """ Creates histograms of the predictions' distribution. """
-    fig = plt.figure(data_type + ': histograms of the' +
+    fig = plt.figure(data_name + ': histograms of the' +
                      classifier_type + 'predictions', (8, 6))
     fig.suptitle('Probabilities:  ' + classifier_type.upper() +
                  ' Classification of ' +
-                 data_type.title().replace('_', ' ') + ' Data',
+                 data_name.title().replace('_', ' ') + ' Data',
                  fontsize=16)
     plt.subplot(211)    # Train Data Subplot
     plt.title('TRAIN Predictions')
@@ -157,7 +157,7 @@ def probabilities_hist(probabilities_train, probabilities_test, labels_train,
     for ax in fig.get_axes():   # Remove axes between subplots
         ax.label_outer()
     if save:
-        get_saving(data_type, data_type + '_' + classifier_type +
+        get_saving(data_name, data_name + '_' + classifier_type +
                    '_predictions_hist', dpi=dpi)
     if show:
         plt.show()
@@ -177,16 +177,16 @@ def single_hist(probabilities, labels, target_class=1):
 
 
 def roc(labels, probabilities, classifier_type='classifier',
-        data_type='data', save=True, show=False, dpi=150):
+        data_name='data', save=True, show=False, dpi=150):
     """ Builds ROC curve. """
     title = ('ROC Curves: ' + classifier_type.upper() +
              ' Classification of ' +
-             data_type.title().replace('_', ' ') + ' Data')
+             data_name.title().replace('_', ' ') + ' Data')
     skplt.metrics.plot_roc(labels, probabilities, figsize=(6, 6),
                            title=title, title_fontsize=16)
 
     if save:
-        get_saving(data_type, data_type + '_' + classifier_type +
+        get_saving(data_name, data_name + '_' + classifier_type +
                    '_ROC_curve', dpi=dpi)
     if show:
         plt.show()

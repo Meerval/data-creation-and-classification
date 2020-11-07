@@ -4,10 +4,10 @@ import visualization as vis
 
 class DataGenerator:
     """ Generates data samples based on the set parameters. """
-    def __init__(self, mu, sigma, sizes=None, data_type='normal',
+    def __init__(self, mu, sigma, sizes=None, data_name='data',
                  instances_count=1000, train_part=0.7):
         self.mu, self.sigma, self.sizes = mu, sigma, sizes
-        self.data_type = data_type
+        self.data_name = data_name
         self.instance_count = instances_count
         self.train_part = train_part
         self.class_count = len(self.mu)
@@ -78,16 +78,15 @@ class DataGenerator:
         """ Calls the function for creating scatterograms and histograms
         of data distribution.
         """
-        vis.DataDistribution(self.get_separated_classes(),
-                             self.data_type).draw()
+        vis.DataDistribution(self.get_separated_classes(), self.data_name).draw()
 
 
-def get_dataset(mu, sigma, sizes=None, data_type='normal',
+def get_dataset(mu, sigma, sizes=None, data_name='data',
                 instance_count=1000, train_part=0.7):
     """ Instantiates the DataGenerator class and returns features and
     labels for train and test samples.
     """
-    data = DataGenerator(mu, sigma, sizes, data_type,
+    data = DataGenerator(mu, sigma, sizes, data_name,
                          instance_count, train_part)
     data.create_classes()
     data.create_labels()

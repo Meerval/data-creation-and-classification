@@ -13,16 +13,16 @@ class Classifier:
     """
 
     def __init__(self, classifier_type, features_train, features_test,
-                 labels_train, labels_test, data_type='normal',
+                 labels_train, labels_test, data_name='data',
                  target_class=1):
         self.classifier_type = classifier_type
         self.features_train = features_train
         self.features_test = features_test
         self.labels_train = labels_train
         self.labels_test = labels_test
-        self.data_type = data_type
+        self.data_name = data_name
+        self.class_count = len(np.unique(self.labels_test))
         self.target_class = target_class
-        self.class_count = None
         self.clf = None
         self.probabilities_train, self.probabilities_test = None, None
         self.predictions_train, self.predictions_test = None, None
@@ -80,7 +80,6 @@ class Classifier:
 
     def get_auc(self, sample_type='test'):
         """ Counts the area under ROC-curve. """
-        self.class_count = len(np.unique(self.labels_test))
         if sample_type == 'test':
             labels, probabilities = self.labels_test, self.probabilities_test
         else:
@@ -122,13 +121,9 @@ class Classifier:
         distribution and drawing ROC-curve.
         """
         self.probabilities()
-        vis.probabilities_hist(self.probabilities_train,
-                               self.probabilities_test,
-                               self.labels_train, self.labels_test,
-                               self.classifier_type, self.data_type,
-                               self.target_class)
-        vis.roc(self.labels_test, self.probabilities_test,
-                self.classifier_type, self.data_type)
+        vis.probabilities_hist(self.probabilities_train, self.probabilities_test, self.labels_train, self.labels_test,
+                               self.classifier_type, self.data_name, self.target_class)
+        vis.roc(self.labels_test, self.probabilities_test, self.classifier_type, self.data_name)
 
     def draw_table(self):
         """ Creates table for results of estimations.
@@ -138,7 +133,7 @@ class Classifier:
         estimations_test = list(self.classifier_estimation('test'))
         estimations_test.insert(0, len(self.labels_test))
         all_estimations = np.array([estimations_train, estimations_test])
-        title = '\t' + self.data_type.title().replace('_', ' ') + \
+        title = '\t' + self.data_name.title().replace('_', ' ') + \
                 ' Dataset: ' + self.classifier_type.upper() + \
                 ' Classifier Estimations\n\n'
         # Creating table
@@ -146,7 +141,7 @@ class Classifier:
         indexes = ['Train', 'Test']
         table = pandas.DataFrame(all_estimations, indexes, columns)
         # Save table as txt
-        filename = self.data_type + '_classifier_estimate.txt'
+        filename = self.data_name + '_classifier_estimate.txt'
         message = (title + str(table) + '\n\tAUC ' +
                    self.classifier_type + ': ' +
                    str(round(self.get_auc(), 2)))
@@ -168,14 +163,15 @@ class Classifier:
 
 
 def get_classification(classifier_type, features_train, features_test,
-                       labels_train, labels_test, data_type='normal',
+                       labels_train, labels_test, data_name='data',
                        target_class=1):
     """ Instantiates the Classifier class, saves figure of probabilities
     distribution and table of classifier results estimations.
     """
-    classifier = Classifier(classifier_type, features_train, features_test,
-                            labels_train, labels_test, data_type,
-                            target_class)
+    classifier = Classifier(classifier_type,
+                            features_train, features_test,
+                            labels_train, labels_test,
+                            data_name, target_class)
     if classifier_type == 'logreg':
         classifier.learning_logreg()
     elif classifier_type == 'tree':
