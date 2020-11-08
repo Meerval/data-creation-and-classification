@@ -43,7 +43,7 @@ class Classifier:
         self.clf = clf.fit(self.features_train, self.labels_train)
         self.probabilities()
         auc_test, auc_train = self.get_auc(), self.get_auc('train')
-        if 0.95*auc_train < auc_test or self.tree_depth == 2:
+        if 0.95 * auc_train < auc_test or self.tree_depth == 2:
             # For normal level of retraining
             return self.clf
         else:
@@ -64,7 +64,7 @@ class Classifier:
                 max_auc, max_clf = auc, self.clf
                 self.trees_count = trees_count
         self.clf = max_clf
-        return self.clf     # returns clf with the best auc
+        return self.clf  # returns clf with the best auc
 
     def probabilities(self):
         """ Creates probabilities (from 0 to 1) for test and train. """
@@ -104,13 +104,13 @@ class Classifier:
             labels, predictions = self.labels_train, self.predictions_train
         # Makes flags (True or False) for every singe label and prediction
         labels = np.array([True if i == self.target_class else False
-                          for i in labels])
+                           for i in labels])
         predictions = np.array([True if i == self.target_class else False
-                               for i in predictions])
-        tp = sum(labels & predictions)      # 1 & 1
-        tn = sum(~labels & ~predictions)    # 0 & 0
-        fp = sum(~labels & predictions)     # 0 & 1
-        fn = sum(labels & ~predictions)     # 1 & 0
+                                for i in predictions])
+        tp = sum(labels & predictions)  # 1 & 1
+        tn = sum(~labels & ~predictions)  # 0 & 0
+        fp = sum(~labels & predictions)  # 0 & 1
+        fn = sum(labels & ~predictions)  # 1 & 0
         self.acc = round((tp + tn) / (tp + tn + fp + fn), 2)
         self.sens = round(tp / (tp + fn), 2)
         self.spec = round(tn / (tn + fp), 2)
@@ -121,31 +121,33 @@ class Classifier:
         distribution and drawing ROC-curve.
         """
         self.probabilities()
-        vis.probabilities_hist(self.probabilities_train, self.probabilities_test, self.labels_train, self.labels_test,
-                               self.classifier_type, self.data_name, self.target_class)
-        vis.roc(self.labels_test, self.probabilities_test, self.classifier_type, self.data_name)
+        vis.probabilities_hist(self.probabilities_train, self.probabilities_test,
+                               self.labels_train, self.labels_test,
+                               self.classifier_type, self.data_name,
+                               self.target_class)
+        vis.roc(self.labels_test, self.probabilities_test,
+                self.classifier_type, self.data_name)
 
     def draw_table(self):
         """ Creates table for results of estimations.
         """
         estimations_train = list(self.classifier_estimation('train'))
-        estimations_train.insert(0, len(self.labels_train))
         estimations_test = list(self.classifier_estimation('test'))
-        estimations_test.insert(0, len(self.labels_test))
         all_estimations = np.array([estimations_train, estimations_test])
         title = '\t' + self.data_name.title().replace('_', ' ') + \
                 ' Dataset: ' + self.classifier_type.upper() + \
                 ' Classifier Estimations\n\n'
         # Creating table
-        columns = ['Samples', 'Accuracy', 'Sensitivity', 'Specificity']
-        indexes = ['Train', 'Test']
+        columns = ['Accuracy', 'Sensitivity', 'Specificity']
+        indexes = ['Train (' + str(len(self.labels_train)) + ' samples)',
+                   'Test (' + str(len(self.labels_test)) + ' samples)']
         table = pandas.DataFrame(all_estimations, indexes, columns)
         # Save table as txt
-        filename = self.data_name + '_classifier_estimate.txt'
+        filename = (self.data_name + '/' +
+                    self.data_name + '_classifier_estimate.txt')
         message = (title + str(table) + '\n\tAUC ' +
-                   self.classifier_type + ': ' +
-                   str(round(self.get_auc(), 2)))
-        try:    # Getting count of lines in the file if it is exist
+                   self.classifier_type + ': ' + str(round(self.get_auc(), 2)))
+        try:  # Getting count of lines in the file if it is exist
             with open(filename, 'r') as file:
                 text = file.readlines()
                 lines_count = len(text)

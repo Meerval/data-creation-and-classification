@@ -1,0 +1,24 @@
+	Normal Dataset: LOGREG Classifier Estimations
+
+                      Accuracy  Sensitivity  Specificity
+Train (1400 samples)      0.94         0.94         0.95
+Test (600 samples)        0.95         0.94         0.96
+	AUC logreg: 0.99
+
+
+	Normal Dataset: TREE Classifier Estimations
+
+                      Accuracy  Sensitivity  Specificity
+Train (1400 samples)      0.96         0.97         0.96
+Test (600 samples)        0.92         0.90         0.95
+	AUC tree: 0.94;	Tree Depth: 5
+
+
+	Normal Dataset: FOREST Classifier Estimations
+
+                      Accuracy  Sensitivity  Specificity
+Train (1400 samples)      1.00         1.00         1.00
+Test (600 samples)        0.94         0.92         0.95
+	AUC forest: 0.98;	Trees' count: 300
+
+

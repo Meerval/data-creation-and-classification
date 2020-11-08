@@ -1,0 +1,24 @@
+	Circle Dataset: LOGREG Classifier Estimations
+
+                      Accuracy  Sensitivity  Specificity
+Train (2100 samples)      0.67          0.0          1.0
+Test (900 samples)        0.65          0.0          1.0
+	AUC logreg: 0.48
+
+
+	Circle Dataset: TREE Classifier Estimations
+
+                      Accuracy  Sensitivity  Specificity
+Train (2100 samples)      0.90         0.90         0.90
+Test (900 samples)        0.85         0.83         0.86
+	AUC tree: 0.94;	Tree Depth: 6
+
+
+	Circle Dataset: FOREST Classifier Estimations
+
+                      Accuracy  Sensitivity  Specificity
+Train (2100 samples)      1.00         1.00         1.00
+Test (900 samples)        0.87         0.79         0.91
+	AUC forest: 0.97;	Trees' count: 250
+
+
