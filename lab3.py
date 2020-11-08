@@ -7,7 +7,32 @@ def classifiers_marathon(mu, sigma, sizes=None, data_name='data',
                          target_class=1):
     """ Generates data samples based on the set parameters,
     draws graphs of data distribution, tests classifiers
-    on the samples, and issues classification estimates.
+    on the samples, and saves classification estimates as txt.
+    @param mu: the average values of creating data for every single
+            feature of every single class in the specific list format like:
+            [[mu_11, mu_12, ..., mu_ij, ..., mu_1n],
+            [mu_21, mu_22, ..., mu_ij, ..., mu_2n],
+            ...,
+            [mu_m1, mu_m2, ..., mu_ij, ..., mu_mn]]
+            where mu_ij is the average value of i-th class and j-th feature
+    @param sigma: the standard deviations of creating data for every single
+            feature of every single class in the format like average values'
+            format
+    @param sizes: if shape of data must be circle it should have the
+            radiuses for every single feature of every single class in
+            the format like average values' format
+    @param data_name: str.
+            Create specific names for your datasets to save
+            correct saving data distribution classification results if
+            work with several datasets.
+    @param instances_count: int: >0
+            the count of the instances for one class
+    @param train_part: float: 0 <= train_part <= 1.
+            The ratio of train instances count to all
+            instances count.
+    @param target_class: int: 0 <= target_class < count of the classes.
+            The class for identification have to be less than count of
+            the classes.
     """
     # Generation of Classes and labels
     samples = list(dg.get_dataset(mu, sigma, sizes, data_name,
